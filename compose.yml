@@ -1,41 +1,38 @@
-version: "3.9"
-
 services:
   db:
     image: mysql:8.0
+    container_name: mysql_pinacoteca
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: contrasenyaRoot
       MYSQL_DATABASE: pinacoteca
-      MYSQL_USER: pinacoteca_user
-      MYSQL_PASSWORD: pinacoteca_pass
+    ports:
+      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - mysql_data:/var/lib/mysql
 
   php:
-    image: santinoalico/phppinacoteca:v1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: phppinacoteca:v1
+    container_name: phppinacoteca
     ports:
       - "8080:80"
-    environment:
-      DB_HOST: db
-      DB_NAME: pinacoteca
-      DB_USER: pinacoteca_user
-      DB_PASSWORD: pinacoteca_pass
     depends_on:
-      db:
-        condition: service_healthy
+      - db
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_pinacoteca
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: contrasenyaRoot
+      PMA_USER: root
+      PMA_PASSWORD: contrasenyaRoot
     ports:
       - "8081:80"
+    depends_on:
+      - db
 
 volumes:
-  db_data:
+  mysql_data:
