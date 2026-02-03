@@ -25,8 +25,8 @@ jobs:
       - name: Build and push DB Docker image
         run: |
           cd mysql
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/pinacoteca:v1 .
-          docker push ${{ secrets.DOCKER_USERNAME }}/pinacoteca:v1
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/Sqlpinacoteca:v1 .
+          docker push ${{ secrets.DOCKER_USERNAME }}/Sqlpinacoteca:v1
 
       # Construir y subir la imagen de la aplicación PHP
       - name: Build and push PHP Docker image

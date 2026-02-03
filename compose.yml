@@ -1,22 +1,13 @@
 services:
   db:
-    image: mysql:8.0
-    container_name: mysql_pinacoteca
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: contrasenyaRoot
-      MYSQL_DATABASE: pinacoteca
+    image: santinoalico/Sqlpinacoteca:v1
+    container_name: contenedorMiCine
     ports:
       - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
 
   php:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: phppinacoteca:v1
-    container_name: phppinacoteca
+    image: santinoalico/pinacoteca:v1
+    container_name: contenedorMiApp
     ports:
       - "8080:80"
     depends_on:
@@ -24,15 +15,11 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: phpmyadmin_pinacoteca
+    container_name: contenedorPhpMyAdmin
     environment:
       PMA_HOST: db
-      PMA_USER: root
-      PMA_PASSWORD: contrasenyaRoot
+      MYSQL_ROOT_PASSWORD: contrasenyaRoot
     ports:
       - "8081:80"
     depends_on:
       - db
-
-volumes:
-  mysql_data:
