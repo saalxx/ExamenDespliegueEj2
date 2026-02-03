@@ -1,7 +1,7 @@
 services:
   db:
     image: santinoalico/phppinacoteca:v1
-    container_name: 
+    container_name: contenedorPHPpinacoteca
     ports:
       - "3306:3306"
 
